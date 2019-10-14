@@ -115,3 +115,9 @@ fi
 
 export JAVA_HOME=/usr/java/jre1.8.0_101
 export PATH=${PATH}:${JAVA_HOME}/bin
+
+BREW1=/home/linuxbrew/.linuxbrew/sbin/
+BREW2=/home/linuxbrew/.linuxbrew/bin/
+export PATH=${PATH}:${BREW1}
+export PATH=${PATH}:${BREW2}
+export TERMINAL=termite

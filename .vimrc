@@ -1,9 +1,19 @@
 " General
+call plug#begin()
+Plug 'tpope/vim-sensible'
+
+" On-demand loading
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'joshdick/onedark.vim'
+call plug#end()
+
+syntax on
+colorscheme onedark
 
 set number	" Show line numbers
 set linebreak	" Break lines at word (requires Wrap lines)
 set showbreak=+++	" Wrap-broken line prefix
-set textwidth=100	" Line wrap (number of cols)
+" set textwidth=100	" Line wrap (number of cols)
 set showmatch	" Highlight matching brace
 set visualbell	" Use visual bell (no beeping)
  
@@ -18,7 +28,10 @@ set shiftwidth=4	" Number of auto-indent spaces
 set smartindent	" Enable smart-indent
 set smarttab	" Enable smart-tabs
 set softtabstop=4	" Number of spaces per Tab
- 
+set tabstop=4
+set expandtab
+set shiftwidth=4
+
 " Advanced
 set ruler	" Show row and column ruler information
  

@@ -1,14 +1,15 @@
 " General
 call plug#begin()
 Plug 'tpope/vim-sensible'
+Plug 'koryschneider/vim-trim'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'joshdick/onedark.vim'
+" Plug 'joshdick/onedark.vim'
 call plug#end()
 
 syntax on
-colorscheme onedark
+" colorscheme onedark
 
 set number	" Show line numbers
 set linebreak	" Break lines at word (requires Wrap lines)

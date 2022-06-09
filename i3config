@@ -11,7 +11,14 @@
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Ubuntu Mono 12
+# Old font:
+# font pango:Ubuntu Mono 12
+# This renders a ~5px titlebar with no text:
+font pango:DejaVu Sans Mono 0
+
+gaps inner 10
+gaps outer 5
+smart_borders on
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -35,9 +42,16 @@ set $right semicolon
 floating_modifier Mod4
 
 # start a terminal
-bindsym Mod4+Return exec uxterm
-for_window [class="FTerm"] floating enable
-bindsym Mod4+Shift+Return exec termite --class FTerm
+bindsym Mod4+Return exec kitty 
+for_window [class="floatterm"] floating enable
+for_window [class="kitty"] border pixel 1
+bindsym Mod4+Shift+Return exec kitty --class floatterm
+
+# start a terminal
+# bindsym Mod4+Return exec uxterm 
+# for_window [class="floatterm"] floating enable
+# for_window [class="uxterm"] border pixel 1
+# bindsym Mod4+Shift+Return exec uxterm -class floatterm
 
 # kill focused window
 bindsym Mod4+Shift+q kill
@@ -50,7 +64,15 @@ bindsym Mod4+Shift+q kill
 # bindsym Mod4+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym Mod4+d exec --no-startup-id "rofi -combi-modi drun,run -show combi"
-bindsym Mod4+Shift+d exec --no-startup-id rofi -show window
+# bindsym Mod4+Shift+d exec --no-startup-id rofi -show window
+bindsym Mod4+x exec --no-startup-id "rofi -show drun -font \\"DejaVu Sans Mono 10\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
+
+bindsym Mod4+Shift+s exec --no-startup-id "rotate_desktop inverted"
+bindsym Mod4+Shift+w exec --no-startup-id "rotate_desktop normal"
+bindsym Mod4+Shift+a exec --no-startup-id "rotate_desktop left"
+bindsym Mod4+Shift+d exec --no-startup-id "rotate_desktop right"
+
+bindsym Mod4+i exec --no-startup-id "xcalib -invert -alter"
 
 # change focus
 # bindsym Mod4+$left focus left
@@ -99,6 +121,8 @@ bindsym Mod4+space focus mode_toggle
 # focus the parent container
 bindsym Mod4+a focus parent
 
+bindsym Mod4+g gaps outer current toggle 5; gaps inner current toggle 10
+
 # focus the child container
 #bindsym Mod4+d focus child
 
@@ -134,7 +158,7 @@ bindsym Mod4+Shift+9 move container to workspace number 9
 bindsym Mod4+Shift+0 move container to workspace number 10
 
 # lock screen
-bindsym Mod4+l exec --no-startup-id i3lock -c 000000
+bindsym Mod4+l exec --no-startup-id i3lock-fancy
 
 # reload the configuration file
 bindsym Mod4+Shift+c reload
@@ -171,19 +195,41 @@ bindsym Mod4+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
+# bar {
+#     i3bar_command i3bar
+#     status_command i3status
+#     position top
+#     font pango:DejaVu Sans Mono 10
+#     strip_workspace_numbers yes
+#     separator_symbol "-"
+#     workspace_buttons yes
+#     tray_padding 0
+#     colors {
+#         statusline  #ffffff
+#         background  #000000
+#         separator   #000000ff
+#             #               BORDER      BACKGROUND  TEXT
+#         focused_workspace   #00000000   #00000000   #c6ff00
+#         inactive_workspace  #00000000   #00000000   #dddddd
+#         active_workspace    #00000000   #00000000   #ffffff
+#         urgent_workspace    #b71c1c     #b71c1c     #00000000
+#         binding_mode        #b71c1c     #b71c1c     #00000000
+#     }
+# }
+
 bar {
-    i3bar_command i3bar
-    status_command i3status
+    status_command i3blocks
     position top
-    font pango:DejaVu Sans Mono 10
+    font pango:DejaVu Sans Mono 12
+    i3bar_command i3bar
     strip_workspace_numbers yes
-    separator_symbol "-"
+    separator_symbol "|"
     workspace_buttons yes
     tray_padding 0
     colors {
         statusline  #ffffff
         background  #000000
-        separator   #000000ff
+        separator   #ff00ffff
             #               BORDER      BACKGROUND  TEXT
         focused_workspace   #00000000   #00000000   #c6ff00
         inactive_workspace  #00000000   #00000000   #dddddd
@@ -193,20 +239,22 @@ bar {
     }
 }
 
+
 # Startup layout
-exec --no-startup-id "i3-msg 'workspace 1:work; append_layout /home/jordan/.config/i3/workspace-1.json'"
-exec --no-startup-id "i3-msg 'workspace 2:web; append_layout /home/jordan/.config/i3/workspace-2.json'"
-exec --no-startup-id "i3-msg 'workspace 3:soc; append_layout /home/jordan/.config/i3/workspace-3.json'"
-exec uxterm
-exec uxterm
-exec uxterm
+exec --no-startup-id "i3-msg 'workspace 1:Work[]; append_layout /home/jordan/.config/i3/workspace-1.json'"
+exec --no-startup-id "i3-msg 'workspace 2:Web[]; append_layout /home/jordan/.config/i3/workspace-2.json'"
+exec --no-startup-id "i3-msg 'workspace 3:Msg[]; append_layout /home/jordan/.config/i3/workspace-3.json'"
+exec kitty
+exec kitty
+exec kitty
 exec google-chrome
 exec telegram-desktop
+exec --no-startup-id pactl set-sink-volume 0 1%
 
 # Set background 
 exec_always --no-startup-id nitrogen --random --set-zoom-fill
 exec_always --no-startup-id compton
-exec_always --no-startup-id pactl set-sink-volume 0 1%
+exec_always --no-startup-id nm-applet
 # exec i3-msg 'workspace 1:work; exec termite'
 # exec i3-msg 'workspace 2:web; exec google-chrome'
 # exec i3-msg 'workspace 3:soc; exec telegram-desktop' 
@@ -221,7 +269,7 @@ exec_always --no-startup-id pactl set-sink-volume 0 1%
 ## Volume control
 
 # Path to volume control, without trailing slash
-set $volumepath ~/i3-volume
+set $volumepath ~/i3-volume/volume
 
 # Command for the status line
 #   ie: i3blocks, i3status
@@ -240,12 +288,12 @@ set $volumestep 5
 # Symbolic name for sink (numeric index not supported)
 #   Recommended: comment out this setting and omit the -s option to use default sink
 #   List sink names: pacmd list-sinks | awk -F "[<>]" '/^\s+name: <.*>/{print $2}'
-set $sinkname alsa_output.pci-0000_00_1b.0.analog-stereo
+set $sinkname alsa_output.pci-0000_00_1f.3.analog-stereo
 
 # Using pulseaudio-utils (append "-s $sinkname" without quotes to override default sink)
-bindsym XF86AudioRaiseVolume exec $volumepath -np -i $volumestep -t $statuscmd -u $statussig
-bindsym XF86AudioLowerVolume exec $volumepath -np -d $volumestep -t $statuscmd -u $statussig
-bindsym XF86AudioMute        exec $volumepath -mn -t $statuscmd -u $statussig
+bindsym XF86AudioRaiseVolume exec --no-startup-id $volumepath -np -i $volumestep -t $statuscmd -u $statussig -s $sinkname
+bindsym XF86AudioLowerVolume exec --no-startup-id $volumepath -np -d $volumestep -t $statuscmd -u $statussig -s $sinkname
+bindsym XF86AudioMute        exec --no-startup-id $volumepath -mn -t $statuscmd -u $statussig -s $sinkname
 
 #bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5% #increase sound volume
 #bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5% #decrease sound volume
@@ -253,6 +301,9 @@ bindsym XF86AudioMute        exec $volumepath -mn -t $statuscmd -u $statussig
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec brightness+ # increase screen brightness
 bindsym XF86MonBrightnessDown exec brightness- # decrease screen brightness
+
+# bindsym Mod4+n exec i3-input -F 'rename workspace to "'`i3-msg -t get_workspaces | jq '.[] | select(.visible == true)' | jq .num`': %s"' -P "new name? "
+
 
 bindsym Print exec screenie 
 

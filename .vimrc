@@ -2,14 +2,15 @@
 call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'koryschneider/vim-trim'
+Plug 'arzg/vim-colors-xcode'
 
 " On-demand loading
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 " Plug 'joshdick/onedark.vim'
 call plug#end()
 
 syntax on
-" colorscheme onedark
+" colorscheme xcodedark
 
 set number	" Show line numbers
 set linebreak	" Break lines at word (requires Wrap lines)
